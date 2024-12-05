@@ -1,0 +1,7 @@
+services:
+  next:
+    build: ./
+    volumes:
+      - ./next-app:/next-app
+    ports:
+      - 3004:3000
