@@ -40,7 +40,7 @@ const Header = () => {
     }
 
     return (
-        <div>
+        <div className="fixed top-0 left-0 w-full">
             <div className="border-b-2 border-text">
                 <nav className="flex items-center justify-between mx-8">
                     <Image 
