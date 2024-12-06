@@ -14,6 +14,7 @@ const Header = () => {
             clearTimeout(timeoutFood.current);
             timeoutFood.current = null;
         }
+        setIsMenuOpen(false);
         setIsFoodOpen(true);
     }
 
@@ -28,6 +29,7 @@ const Header = () => {
             clearTimeout(timeoutMenu.current);
             timeoutMenu.current = null;
         }
+        setIsFoodOpen(false);
         setIsMenuOpen(true);
     }
 
