@@ -40,7 +40,7 @@ const Header = () => {
     }
 
     return (
-        <div className="fixed top-0 left-0 w-full">
+        <div className="fixed top-0 left-0 w-full bg-white">
             <div className="border-b-2 border-text">
                 <nav className="flex items-center justify-between mx-8">
                     <Image 
@@ -56,7 +56,7 @@ const Header = () => {
                             onMouseLeave={handleMouseLeaveFood}
                             className="relative"
                         >
-                            <div className="flex items-center space-x-11 px-4 border-l border-black">
+                            <div className="flex items-center space-x-11 px-4 border-l border-text">
                                 <Image
                                     src="/food-icon.svg"
                                     alt="食品のアイコン"
@@ -78,7 +78,7 @@ const Header = () => {
                                 </div>
                             </div>
                             <div
-                                className={`absolute right-0 top-full w-full mt-6 rounded bg-white border border-black px-4 py-2 transition-all duration-300 ease-in-out ${
+                                className={`absolute right-0 top-full w-full mt-6 rounded bg-white border border-text px-4 py-2 transition-all duration-300 ease-in-out ${
                                     isFoodOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
                                 } overflow-hidden`}
                             >
@@ -111,7 +111,7 @@ const Header = () => {
                             onMouseLeave={handleMouseLeaveMenu}
                             className="relative"
                         >
-                            <div className="flex items-center space-x-11 px-4 border-r border-l border-black">
+                            <div className="flex items-center space-x-11 px-4 border-r border-l border-text">
                                 <Image
                                     src="/menu-svgrepo-com.svg"
                                     alt="メニューのアイコン"
@@ -133,7 +133,7 @@ const Header = () => {
                                 </div>
                             </div>
                             <div
-                                className={`absolute right-0 top-full w-full mt-6 rounded bg-white border border-black px-4 py-2 transition-all duration-300 ease-in-out ${
+                                className={`absolute right-0 top-full w-full mt-6 rounded bg-white border border-text px-4 py-2 transition-all duration-300 ease-in-out ${
                                     isMenuOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
                                 } overflow-hidden`}
                             >
