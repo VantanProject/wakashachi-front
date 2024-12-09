@@ -9,8 +9,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        base: "var(--base-color)",
+        text: "var(--text-color)",
+        accent: "var(--accent-color)",
+        accentDark: "var(--accent-dark-color)",
+        accentLight: "var(--accent-light-color)",
+        textOpacity: "var(--text-opacity-color)",
+        formError: "var(--form-error-color)",
       },
     },
   },
