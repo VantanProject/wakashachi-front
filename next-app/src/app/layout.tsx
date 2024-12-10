@@ -29,8 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header/>
-        <main className="pt-[70px]">
+        <main className="bg-baseColor">
           {children}
         </main>
         

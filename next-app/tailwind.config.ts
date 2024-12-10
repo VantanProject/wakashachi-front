@@ -9,13 +9,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        base: "var(--base-color)",
+        baseColor: "var(--base-color)",
         text: "var(--text-color)",
         accent: "var(--accent-color)",
         accentDark: "var(--accent-dark-color)",
         accentLight: "var(--accent-light-color)",
         textOpacity: "var(--text-opacity-color)",
         formError: "var(--form-error-color)",
+      },
+      boxShadow: {
+        'form': '0 0 10px rgba(0, 0, 0, 0.25)',
+        'input': '4px 4px 4px rgba(0, 0, 0, 0.25)',
       },
     },
   },
