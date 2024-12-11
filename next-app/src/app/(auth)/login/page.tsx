@@ -1,11 +1,50 @@
 "use client";
 
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react"
 
+interface LoginRequestProps {
+    email:string;
+    password:string;
+}
+interface LoginResponseProps {
+    token:string;
+    success:string;
+}
+
 const Login = () => {
+    const route = useRouter();
     const [visibility, setVisibility] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
+
+    const handleLogin = async(event: React.FormEvent) => {
+        event.preventDefault();
+        setErrors({});
+
+        try{
+            const response = await axios.post<LoginResponseProps>(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+                email,
+                password,
+            } as LoginRequestProps)
+            localStorage.setItem('authToken', response.data.token);
+            localStorage.setItem('success', response.data.success);
+            route.push('/top')
+        }catch(error:any){
+            if (error.response?.status === 422) {
+                // バリデーションエラーをセット
+                setErrors(error.response.data.errors);
+            } else {
+                console.error("メールアドレスまたはパスワードが正しくありません。", error);
+            }
+        }
+
+    } 
+
     return (
         <div className="flex items-center justify-center min-h-screen ">
             <div className="max-w-[480px] w-full">
@@ -23,23 +62,28 @@ const Login = () => {
                     <div className="p-4">
                         
                         
-                        <form className="space-y-4 px-1 mt-1">
+                        <form onSubmit={handleLogin} className="space-y-4 px-1 mt-1">
                             {/* メールアドレス */}
                             <div className="group">
                                 <label className="block text-base text-text mb-2">メールアドレス</label>
                                 <div className="relative">
-                                    <Image
-                                        src="/account.svg"
-                                        alt="メールアイコン"
-                                        width={22}
-                                        height={22}
-                                        className="absolute left-2 top-1/2 transform -translate-y-1/2 opacity-60"
-                                    />
                                     <input
                                         type="email"
-                                        className="pl-12 w-full px-4 py-2 border border-textOpacity rounded-md placeholder:text-base group-hover:shadow-input focus:shadow-input transition-shadow"
+                                        className="peer pl-12 h-[43px] w-full px-4 py-2 border border-textOpacity rounded-md placeholder:text-base placeholder:focus:text-text group-hover:shadow-input focus:shadow-input focus:outline-none focus:border-text transition-shadow"
                                         placeholder="user@mail.com"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                     />
+                                    <Image
+                                        src="/person.svg"
+                                        alt="メールアイコン"
+                                        width={16}
+                                        height={16}
+                                        className="absolute left-3 top-1/2 transform -translate-y-1/2 opacity-60 peer-focus:opacity-100 transition-opacity"
+                                    />
+                                    {errors.email && (
+                                        <p className="absolute left-0 top-full text-formError text-sm">{errors.email[0]}</p>
+                                    )}
                                 </div>
                                 
                             </div>
@@ -48,16 +92,19 @@ const Login = () => {
                             <div className="group">
                                 <label className="block text-base text-text mb-2">パスワード</label>
                                 <div className="relative">
-                                    <Image
-                                        src="/key.svg"
-                                        alt="パスワードアイコン"
-                                        width={22}
-                                        height={22}
-                                        className="absolute left-2 top-1/2 transform -translate-y-1/2 opacity-60"
-                                    />
+                                    
                                     <input
                                         type={visibility ? "text" : "password" }
-                                        className="w-full pl-12 px-4 py-2 border border-textOpacity rounded-md group-hover:shadow-input focus:shadow-input transition-shadow"
+                                        className="peer pl-12 h-[43px] w-full px-4 py-2 border border-textOpacity rounded-md placeholder:text-base placeholder:focus:text-text group-hover:shadow-input focus:shadow-input focus:outline-none focus:border-text transition-shadow"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                    <Image
+                                        src="/padlock.svg"
+                                        alt="パスワードアイコン"
+                                        width={20}
+                                        height={20}
+                                        className="absolute left-3 top-1/2 transform -translate-y-1/2 opacity-60 peer-focus:opacity-100 transition-opacity"
                                     />
                                     <button 
                                         onClick={() => setVisibility(!visibility)}
@@ -68,9 +115,12 @@ const Login = () => {
                                             alt="パスワードが見えないアイコン"
                                             width={20}
                                             height={20}
-                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 opacity-60"
+                                            className="absolute right-3 top-1/2 transform -translate-y-1/2"
                                         />
                                     </button>
+                                    {errors.password && (
+                                        <p className="absolute left-0 top-full text-formError text-sm">{errors.password[0]}</p>
+                                    )}
                                 </div>
                             </div>
 

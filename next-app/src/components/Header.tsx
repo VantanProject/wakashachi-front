@@ -17,11 +17,7 @@ const Header = () => {
     }, []);
 
     return (
-<<<<<<< HEAD
         <div className="fixed top-0 left-0 w-full bg-baseColor">
-=======
-        <div className="fixed top-0 left-0 w-full bg-base">
->>>>>>> 59a0a21102a82d3cd76d8281095e83c758adb072
             <div className="border-b-2 border-text h-[70px]">
                 <nav className="flex items-center justify-between mx-8 h-full">
                     <Image 
@@ -61,11 +57,7 @@ const Header = () => {
                                 </div>
 
                             <div
-<<<<<<< HEAD
                                 className={`absolute right-0 top-full w-full mt-6 rounded bg-baseColor border border-text px-4 py-2 transition-all duration-300 ease-in-out ${
-=======
-                                className={`absolute right-0 top-full w-full mt-6 rounded bg-base border border-text px-4 py-2 transition-all duration-300 ease-in-out ${
->>>>>>> 59a0a21102a82d3cd76d8281095e83c758adb072
                                     isMerchOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
                                 } overflow-hidden`}
                             >
@@ -130,11 +122,7 @@ const Header = () => {
                                 </div>
                             </div>
                             <div
-<<<<<<< HEAD
                                 className={`absolute right-0 top-full w-full mt-6 rounded bg-baseColor border border-text px-4 py-2 transition-all duration-300 ease-in-out ${
-=======
-                                className={`absolute right-0 top-full w-full mt-6 rounded bg-base border border-text px-4 py-2 transition-all duration-300 ease-in-out ${
->>>>>>> 59a0a21102a82d3cd76d8281095e83c758adb072
                                     isMenuOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
                                 } overflow-hidden`}
                             >
