@@ -31,7 +31,6 @@ const Login = () => {
             if (error?.status === 422 && error.data?.errors) {
                 setErrors(error.data.errors);
             } else {
-                console.error('メールアドレスまたはパスワードが正しくありません。', error);
                 setErrors({ password: ['メールアドレスまたはパスワードが正しくありません。'] })
             }
         }
