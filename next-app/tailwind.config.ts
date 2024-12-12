@@ -20,6 +20,7 @@ export default {
       boxShadow: {
         'form': '0 0 10px rgba(0, 0, 0, 0.25)',
         'input': '4px 4px 4px rgba(0, 0, 0, 0.25)',
+        'error': '4px 4px 4px rgba(216, 6, 6, 0.4)',
       },
     },
   },

@@ -1,49 +1,41 @@
 "use client";
 
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react"
-
-interface LoginRequestProps {
-    email:string;
-    password:string;
-}
-interface LoginResponseProps {
-    token:string;
-    success:string;
-}
+import { useState } from "react";
+import { LoginApi } from "@/api/Login";
 
 const Login = () => {
-    const route = useRouter();
+    const router = useRouter();
     const [visibility, setVisibility] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
 
-    const handleLogin = async(event: React.FormEvent) => {
+    const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
-        setErrors({});
-
-        try{
-            const response = await axios.post<LoginResponseProps>(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
-                email,
-                password,
-            } as LoginRequestProps)
-            localStorage.setItem('authToken', response.data.token);
-            localStorage.setItem('success', response.data.success);
-            route.push('/top')
-        }catch(error:any){
-            if (error.response?.status === 422) {
-                // バリデーションエラーをセット
-                setErrors(error.response.data.errors);
+        setErrors({}); // エラーをリセット
+    
+        const loginData = { email, password };
+    
+        try {
+            const response = await LoginApi(loginData);
+            if (response.token) {
+                localStorage.setItem('authToken', response.token);
+                localStorage.setItem('success', String(response.success));
+                router.push('/top');
+            }
+        } catch (error: any) {
+            // バリデーションエラーの場合
+            if (error?.status === 422 && error.data?.errors) {
+                setErrors(error.data.errors);
             } else {
-                console.error("メールアドレスまたはパスワードが正しくありません。", error);
+                console.error('メールアドレスまたはパスワードが正しくありません。', error);
+                setErrors({ password: ['メールアドレスまたはパスワードが正しくありません。'] })
             }
         }
-
-    } 
+    };
 
     return (
         <div className="flex items-center justify-center min-h-screen ">
@@ -60,8 +52,6 @@ const Login = () => {
                         <h1 className="text-2xl text-center text-text p-6">ログイン</h1>
                     </div>
                     <div className="p-4">
-                        
-                        
                         <form onSubmit={handleLogin} className="space-y-4 px-1 mt-1">
                             {/* メールアドレス */}
                             <div className="group">
@@ -81,21 +71,19 @@ const Login = () => {
                                         height={16}
                                         className="absolute left-3 top-1/2 transform -translate-y-1/2 opacity-60 peer-focus:opacity-100 transition-opacity"
                                     />
-                                    {errors.email && (
-                                        <p className="absolute left-0 top-full text-formError text-sm">{errors.email[0]}</p>
-                                    )}
                                 </div>
-                                
+                                {errors.email && (
+                                    <p className="pt-2 text-error text-sm">{errors.email[0]}</p>
+                                )}
                             </div>
 
                             {/* パスワード */}
                             <div className="group">
                                 <label className="block text-base text-text mb-2">パスワード</label>
                                 <div className="relative">
-                                    
                                     <input
-                                        type={visibility ? "text" : "password" }
-                                        className="peer pl-12 h-[43px] w-full px-4 py-2 border border-textOpacity rounded-md placeholder:text-base placeholder:focus:text-text group-hover:shadow-input focus:shadow-input focus:outline-none focus:border-text transition-shadow"
+                                        type={visibility ? "text" : "password"}
+                                        className={`peer pl-12 h-[43px] w-full px-4 py-2 border rounded-md placeholder:text-base placeholder:focus:text-text group-hover:shadow-input focus:shadow-input focus:outline-none focus:border-text transition-shadow ${ errors.password ? "border-formError shadow-error" : "border-textOpacity" }`}
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
@@ -106,7 +94,7 @@ const Login = () => {
                                         height={20}
                                         className="absolute left-3 top-1/2 transform -translate-y-1/2 opacity-60 peer-focus:opacity-100 transition-opacity"
                                     />
-                                    <button 
+                                    <button
                                         onClick={() => setVisibility(!visibility)}
                                         type="button"
                                     >
@@ -118,15 +106,18 @@ const Login = () => {
                                             className="absolute right-3 top-1/2 transform -translate-y-1/2"
                                         />
                                     </button>
-                                    {errors.password && (
-                                        <p className="absolute left-0 top-full text-formError text-sm">{errors.password[0]}</p>
-                                    )}
                                 </div>
+                                {errors.password && (
+                                        <p className="absolute text-formError pt-3 text-error text-xs">{errors.password[0]}</p>
+                                )}
                             </div>
 
                             {/* パスワードを忘れた場合 */}
-                            <div className="pl-[6px] text-left pt-3 pb-1">
-                                <Link href="#" className="text-xs text-textOpacity underline hover:text-text transition-colors duration-500">
+                            <div className="text-left pt-3 pb-1">
+                                <Link
+                                    href="#"
+                                    className="text-xs text-textOpacity underline hover:text-text transition-colors duration-500"
+                                >
                                     パスワードをお忘れの場合
                                 </Link>
                             </div>
@@ -141,7 +132,6 @@ const Login = () => {
                         </form>
                     </div>
                 </div>
-                
             </div>
         </div>
     );
