@@ -5,28 +5,31 @@ export interface LoginProps {
     password: string;
 }
 
-export interface LoginResponse {
-    success: boolean;
-    token?: string;
+export interface LoginResponseTrue {
+    success: true;
+    token: string;
 }
 
-export const LoginApi = async ({
+export interface LoginResponseFalse {
+    success: false;
+}
+
+export const Login = async ({
     email,
     password,
-}: LoginProps): Promise<LoginResponse> => {
+}: LoginProps): Promise<LoginResponseTrue | LoginResponseFalse> => {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/login`;
 
     try {
-        const response = await axios.post<LoginResponse>(api_url, {
+        const response = await axios.post<LoginResponseTrue | LoginResponseFalse>(api_url, {
             email: email,
             password: password,
         });
         return response.data;
     } catch (error: any) {
-        // エラーの詳細をそのままスローする
-        if (error.response) {
-            throw error.response;
-        }
-        throw error;
+        console.log(error);
+        return {
+            success: false,
+        };
     }
 };
