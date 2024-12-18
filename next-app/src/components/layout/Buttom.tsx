@@ -1,18 +1,16 @@
+import Link from "next/link";
+
 export interface ButtonProps {
-    className?: string;
-    type: "submit" | "reset" | "button" | undefined;
-    children?: React.ReactNode;
-    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    href:string;
+    children: React.ReactNode;
 }
-const Button = ({className, type, children, onClick }:ButtonProps) => {
+export function Button({ href, children }:ButtonProps) {
     return(
-        <button
-            className={`m-2 p-3 rounded-lg bg-accent text-base ${className}`}
-            type={type}
-            onClick={onClick}
+        <Link 
+            href={href}
+            className="text-accent text-base bg-accentLight px-5 py-2 rounded-md border-[1px] border-accent hover:border-2 hover:bg-baseColor transition duration-300"
         >
             {children}
-        </button>
+        </Link>
     )
 }
-export default Button;
