@@ -1,3 +1,4 @@
+import { DeleteButton } from "@/components/layout/DeleteButton";
 import Image from "next/image";
 
 export default function Home() {
