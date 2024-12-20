@@ -19,7 +19,7 @@ export function SearchBox({ onChange, value, placeholder }: SearchBoxProps) {
             <Image
                 className='absolute left-[460px] top-1/2 transform -translate-y-1/2 opacity-60 peer-focus:opacity-100'
                 src="/search.svg"
-                alt="ドロップダウンメニューのアイコン"
+                alt="検索のアイコン"
                 width={32}
                 height={32}
             />
