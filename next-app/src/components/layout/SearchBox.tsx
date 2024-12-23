@@ -14,7 +14,7 @@ export function SearchBox({ onChange, value, placeholder }: SearchBoxProps) {
                 className="peer w-[500px] h-11 pl-8 pr-12 border border-textOpacity rounded-md text-text placeholder:text-base focus:outline-none focus:border-text"
                 onChange={onChange}
                 value={value}
-                placeholder={`${placeholder}の検索が入ります`}
+                placeholder={placeholder}
             />
             <Image
                 className='absolute left-[460px] top-1/2 transform -translate-y-1/2 opacity-60 peer-focus:opacity-100'
