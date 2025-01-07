@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Login } from "@/api/Login";
+import Cookies from "js-cookie";
 
 export default function Page() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function Page() {
     const response = await Login({ email, password });
 
     if (response.success) {
-      localStorage.setItem("authToken", response.token);
+      Cookies.set('AuthToken', response.token);
       router.push("/top");
     } else {
       setIsError(true);
