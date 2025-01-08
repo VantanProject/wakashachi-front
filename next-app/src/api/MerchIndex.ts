@@ -5,7 +5,7 @@ export interface MerchProps {
     search: {
         name: string;
         allergyIds: number[];
-        currentPage:  number;
+        currentPage: number;
     }
 }
 
@@ -14,27 +14,33 @@ export interface MerchResponse {
     merchs: Array<{
         id: number;
         name: string;
-        allergyIds: number[];
-        updated_at: Date;
+        allergyNames: string[];
+        updated_at: string;
     }>
     ids: number[];
     lastPage: number;
 }
 
-export async function Merch({ }:MerchProps) {
+export async function MerchIndex({ search }: MerchProps): Promise<MerchResponse> {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/merch`;
-    const token = Cookies.get("AuthToken");
+    const token = Cookie.get("AuthToken");
     try {
         const response = await axios.get<MerchResponse>(api_url, {
+            params: {
+                search: search
+            },
             headers: {
                 Authorization: `Bearer ${token}`,
-            },   
+            },
         });
         return response.data;
     } catch (error) {
         console.log(error);
         return {
             success: false,
+            merchs: [],
+            ids: [],
+            lastPage: 0,
         };
     }
 }
