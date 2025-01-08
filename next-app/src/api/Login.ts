@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export interface LoginProps {
     email: string;
     password: string;
@@ -14,10 +15,10 @@ export interface LoginResponseFalse {
     success: false;
 }
 
-export const Login = async ({
+export async function Login({
     email,
     password,
-}: LoginProps): Promise<LoginResponseTrue | LoginResponseFalse> => {
+}: LoginProps): Promise<LoginResponseTrue | LoginResponseFalse> {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/login`;
 
     try {
@@ -26,7 +27,7 @@ export const Login = async ({
             password: password,
         });
         return response.data;
-    } catch (error: any) {
+    } catch (error) {
         console.log(error);
         return {
             success: false,
