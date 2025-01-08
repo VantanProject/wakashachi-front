@@ -1,3 +1,6 @@
+
+import { SearchBox } from "@/components/layout/SearchBox";
+
 export default function Page() {
     return(
         <div>
