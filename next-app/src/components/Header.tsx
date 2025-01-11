@@ -61,7 +61,7 @@ export function Header () {
                       <li>
                         <Link
                           className="flex p-2 items-center space-x-3"
-                          href="#"
+                          href="/merch"
                         >
                           <Image
                             src="/food-icon.svg"
@@ -75,7 +75,7 @@ export function Header () {
                       <li>
                         <Link
                           className="flex p-2 items-center space-x-3"
-                          href="#"
+                          href="/merch/store"
                         >
                           <Image
                             src="/pulus-icon.svg"
@@ -126,7 +126,7 @@ export function Header () {
                       <li>
                         <Link
                           className="flex p-2 items-center space-x-3"
-                          href="#"
+                          href="/menu"
                         >
                           <Image
                             src="/menu-svgrepo-com.svg"
@@ -140,7 +140,7 @@ export function Header () {
                       <li>
                         <Link
                           className="flex p-2 items-center space-x-3"
-                          href="#"
+                          href="/menu/store"
                         >
                           <Image
                             src="/pulus-icon.svg"

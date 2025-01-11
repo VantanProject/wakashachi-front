@@ -1,7 +1,7 @@
 import axios from "axios";
-import Cookie from "js-cookie";
+import Cookies from "js-cookie";
 
-export interface MerchProps {
+export interface MerchIndexProps {
     search: {
         name: string;
         allergyIds: number[];
@@ -9,23 +9,24 @@ export interface MerchProps {
     }
 }
 
-export interface MerchResponse {
+export interface MerchIndexResponse {
     success: boolean;
     merchs: Array<{
         id: number;
         name: string;
         allergyNames: string[];
+        price: number;
         updated_at: string;
     }>
     ids: number[];
     lastPage: number;
 }
 
-export async function MerchIndex({ search }: MerchProps): Promise<MerchResponse> {
+export async function MerchIndex({ search }: MerchIndexProps): Promise<MerchIndexResponse> {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/merch`;
-    const token = Cookie.get("AuthToken");
+    const token = Cookies.get("AuthToken");
     try {
-        const response = await axios.get<MerchResponse>(api_url, {
+        const response = await axios.get<MerchIndexResponse>(api_url, {
             params: {
                 search: search
             },

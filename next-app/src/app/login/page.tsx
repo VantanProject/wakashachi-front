@@ -20,7 +20,7 @@ export default function Page() {
 
     if (response.success) {
       Cookies.set('AuthToken', response.token);
-      router.push("/top");
+      router.push("/");
     } else {
       setIsError(true);
     }

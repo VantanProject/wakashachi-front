@@ -1,14 +1,14 @@
 import axios from "axios";
-import Cookie from "js-cookie";
+import Cookies from "js-cookie";
 
-export interface MenuProps {
+export interface MenuIndexProps {
     search: {
         name: string;
         currentPage: number;
     }
 }
 
-export interface MenuResponse {
+export interface MenuIndexResponse {
     success: boolean;
     menus: Array<{
         id: number;
@@ -19,11 +19,11 @@ export interface MenuResponse {
     lastPage: number;
 }
 
-export async function MenuIndex({ search }: MenuProps): Promise<MenuResponse> {
+export async function MenuIndex({ search }: MenuIndexProps): Promise<MenuIndexResponse> {
     const api_url = `${process.env.NEXT_PUBLIC_API_URL}/menu`;
-    const token = Cookie.get("AuthToken");
+    const token = Cookies.get("AuthToken");
     try {
-        const response = await axios.get<MenuResponse>(api_url, {
+        const response = await axios.get<MenuIndexResponse>(api_url, {
             params: {
                 search: search
             },
