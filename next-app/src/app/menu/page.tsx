@@ -63,7 +63,7 @@ export default function Page() {
               onClick={() => setDeleteModalFlg(true)}
               isCheck={checkedIds.length > 0}
             />
-            <Button href="/menu/create">新規登録</Button>
+            <Button href="/menu/store">新規登録</Button>
           </div>
         </div>
 
