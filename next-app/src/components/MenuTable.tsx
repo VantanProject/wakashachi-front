@@ -13,7 +13,7 @@ export interface MenuTableProps {
   setSerch: React.Dispatch<React.SetStateAction<MenuIndexProps["search"]>>;
 }
 
-// サンプル
+// データの例
 // menus = [
 //   {
 //     id: 1,

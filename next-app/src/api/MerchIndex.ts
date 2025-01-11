@@ -11,7 +11,7 @@ export interface MerchIndexProps {
 
 export interface MerchIndexResponse {
     success: boolean;
-    merchs: Array<{
+    merches: Array<{
         id: number;
         name: string;
         allergyNames: string[];
@@ -39,7 +39,7 @@ export async function MerchIndex({ search }: MerchIndexProps): Promise<MerchInde
         console.log(error);
         return {
             success: false,
-            merchs: [],
+            merches: [],
             ids: [],
             lastPage: 0,
         };

@@ -5,6 +5,7 @@ import { DeleteButton } from "@/components/DeleteButton";
 import { DeleteModal } from "@/components/DeleteModal";
 import { List } from "@/components/List";
 import { SearchBox } from "@/components/SearchBox";
+import { Select } from "@/components/Select";
 import { useState } from "react";
 
 export default function Page() {
@@ -59,6 +60,18 @@ export default function Page() {
               value={serchBoxValue}
               onChange={(e) => setSearchBoxValue(e.target.value)}
               placeholder="検索値を入力してください"
+            />
+          </div>
+          <div>
+            <div className="pb-2">Selectコンポーネント</div>
+            <Select
+              className="border"
+              options={[
+                { value: "1", label: "ラベル1" },
+                { value: "2", label: "ラベル2" },
+                { value: "3", label: "ラベル3" },
+              ]}
+              multi={true}
             />
           </div>
         </div>
