@@ -41,14 +41,16 @@ export function DeleteModal({
                   </div>
                 </div>
                 <ul className="border border-text rounded-xl mb-6 overflow-y-auto h-48">
+                  <li className="h-4 border-b border-textOpacity"></li>
                   {deleteItems.map((item: string, index: number) => (
                     <li
                       key={index}
-                      className="[&:not(:last-child)]:border-b px-4 py-2 border-textOpacity text-text text-base"
+                      className="border-b px-4 py-2 border-textOpacity text-text text-base"
                     >
                       {item}
                     </li>
                   ))}
+                  <li className="h-4"></li>
                 </ul>
                 <div className="flex justify-end space-x-4">
                   <button

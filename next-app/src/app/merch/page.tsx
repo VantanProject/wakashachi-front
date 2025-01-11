@@ -9,6 +9,7 @@ import {
 } from "@/api/MerchIndex";
 import { Button } from "@/components/Button";
 import { DeleteButton } from "@/components/DeleteButton";
+import { DeleteModal } from "@/components/DeleteModal";
 import { List } from "@/components/List";
 import { MerchTable } from "@/components/MerchTable";
 import { SearchBox } from "@/components/SearchBox";
@@ -20,7 +21,7 @@ export default function Page() {
   const [merches, setMerches] = useState<MerchIndexResponse["merches"]>([]);
   const [ids, setIds] = useState<MerchIndexResponse["ids"]>([]);
   const [LastPage, setLastPage] = useState<MerchIndexResponse["lastPage"]>(0);
-  const [checkedIds, setCheckedIds] = useState<number[]>([3]);
+  const [checkedIds, setCheckedIds] = useState<number[]>([]);
 
   // 検索ロジック
   const [search, setSearch] = useState<MerchIndexProps["search"]>({
@@ -64,49 +65,66 @@ export default function Page() {
     selectApi();
   }, []);
 
+  // 削除モーダル用State
+  const [deleteModalFlg, setDeleteModalFlg] = useState(false);
+
   return (
-    <List title="商品一覧">
-      <div className="flex justify-between pb-5">
-        <div className="flex gap-2">
-          <SearchBox
-            value={search.name}
-            onChange={(e) =>
-              setSearch((search) => ({ ...search, name: e.target.value }))
-            }
-            placeholder="検索値を入力してください"
-          />
-          <div className="border border-textOpacity rounded-md w-96">
-            <Select
-              placeholder="アレルギー絞り込み"
-              options={allergies}
-              multi={true}
-              onChange={(e: SelectItem[]) => {
-                setSearch((search) => ({
-                  ...search,
-                  allergyIds: e.map((e) => e.value),
-                }));
-              }}
+    <>
+      <List title="商品一覧">
+        <div className="flex justify-between pb-5">
+          <div className="flex gap-2">
+            <SearchBox
+              value={search.name}
+              onChange={(e) =>
+                setSearch((search) => ({ ...search, name: e.target.value }))
+              }
+              placeholder="検索値を入力してください"
             />
+            <div className="border border-textOpacity rounded-md w-96">
+              <Select
+                placeholder="アレルギー絞り込み"
+                options={allergies}
+                multi={true}
+                onChange={(e: SelectItem[]) => {
+                  setSearch((search) => ({
+                    ...search,
+                    allergyIds: e.map((e) => e.value),
+                  }));
+                }}
+              />
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <DeleteButton
+              onClick={() => setDeleteModalFlg(true)}
+              isCheck={checkedIds.length > 0}
+            />
+            <Button href="/merch/create">新規登録</Button>
           </div>
         </div>
-        <div className="flex gap-2">
-          <DeleteButton
-            onClick={() => delteApi()}
-            isCheck={checkedIds.length > 0}
-          />
-          <Button href="/merch/create">新規登録</Button>
-        </div>
-      </div>
 
-      <MerchTable
-        merches={merches}
-        ids={ids}
-        checkedIds={checkedIds}
-        setCheckedIds={setCheckedIds}
-        lastPage={LastPage}
-        currentPage={search.currentPage}
-        setSerch={setSearch}
+        <MerchTable
+          merches={merches}
+          ids={ids}
+          checkedIds={checkedIds}
+          setCheckedIds={setCheckedIds}
+          lastPage={LastPage}
+          currentPage={search.currentPage}
+          setSerch={setSearch}
+        />
+      </List>
+
+      <DeleteModal
+        isShow={deleteModalFlg}
+        deleteItems={merches
+          .filter((merch) => checkedIds.includes(merch.id))
+          .map((merch) => merch.name)}
+        onClese={() => setDeleteModalFlg(false)}
+        onDelete={() => {
+          delteApi();
+          setDeleteModalFlg(false);
+        }}
       />
-    </List>
+    </>
   );
 }

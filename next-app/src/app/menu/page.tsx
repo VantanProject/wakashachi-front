@@ -4,6 +4,7 @@ import { MenuDestroy } from "@/api/MenuDestroy";
 import { MenuIndex, MenuIndexProps, MenuIndexResponse } from "@/api/MenuIndex";
 import { Button } from "@/components/Button";
 import { DeleteButton } from "@/components/DeleteButton";
+import { DeleteModal } from "@/components/DeleteModal";
 import { List } from "@/components/List";
 import { MenuTable } from "@/components/MenuTable";
 import { SearchBox } from "@/components/SearchBox";
@@ -37,40 +38,56 @@ export default function Page() {
   const delteApi = async () => {
     const response = await MenuDestroy({ ids });
     if (response.success) {
-        setCheckedIds([]);
-        alert(response.message);
-        indexApi();
+      setCheckedIds([]);
+      alert(response.message);
+      indexApi();
     }
-  }
+  };
+
+  // 削除モーダル用State
+  const [deleteModalFlg, setDeleteModalFlg] = useState(false);
 
   return (
-    <List title="メニュー表一覧">
-      <div className="flex justify-between pb-5">
-        <SearchBox
-          value={search.name}
-          onChange={(e) =>
-            setSearch((search) => ({ ...search, name: e.target.value }))
-          }
-          placeholder="検索値を入力してください"
-        />
-        <div className="flex gap-2">
-          <DeleteButton
-            onClick={() => delteApi()}
-            isCheck={checkedIds.length > 0}
+    <>
+      <List title="メニュー表一覧">
+        <div className="flex justify-between pb-5">
+          <SearchBox
+            value={search.name}
+            onChange={(e) =>
+              setSearch((search) => ({ ...search, name: e.target.value }))
+            }
+            placeholder="検索値を入力してください"
           />
-          <Button href="/menu/create">新規登録</Button>
+          <div className="flex gap-2">
+            <DeleteButton
+              onClick={() => setDeleteModalFlg(true)}
+              isCheck={checkedIds.length > 0}
+            />
+            <Button href="/menu/create">新規登録</Button>
+          </div>
         </div>
-      </div>
 
-      <MenuTable
-        menus={menus}
-        ids={ids}
-        checkedIds={checkedIds}
-        setCheckedIds={setCheckedIds}
-        lastPage={LastPage}
-        currentPage={search.currentPage}
-        setSerch={setSearch}
+        <MenuTable
+          menus={menus}
+          ids={ids}
+          checkedIds={checkedIds}
+          setCheckedIds={setCheckedIds}
+          lastPage={LastPage}
+          currentPage={search.currentPage}
+          setSerch={setSearch}
+        />
+      </List>
+      <DeleteModal
+        isShow={deleteModalFlg}
+        deleteItems={menus
+          .filter((menu) => checkedIds.includes(menu.id))
+          .map((menu) => menu.name)}
+        onClese={() => setDeleteModalFlg(false)}
+        onDelete={() => {
+          delteApi();
+          setDeleteModalFlg(false);
+        }}
       />
-    </List>
+    </>
   );
 }
