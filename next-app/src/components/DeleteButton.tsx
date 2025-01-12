@@ -11,8 +11,12 @@ export function DeleteButton({ onClick, isCheck }: DeleteButtonProps) {
         onClick: onClick,
       }
     : {
-        className: `leading-tight w-fit border border-textOpacity px-5 py-2 text-textLight rounded-md text-base bg-gradient-to-bl from-transparent to-black via-black bg-opacity-50
-                bg-[linear-gradient(to_bottom_left,_transparent_49%,_gray_50%,_transparent_51%)]`,
+        className:
+          "leading-tight w-fit border border-textOpacity px-5 py-2 text-textLight rounded-md text-base bg-gradient-to-bl from-transparent to-black via-black bg-opacity-50",
+        style: {
+          background:
+            "linear-gradient(to bottom left, transparent 49%, #4D4535 50%, transparent 51%)",
+        },
         disabled: true,
       };
   return <button {...buttonProps}>削除</button>;

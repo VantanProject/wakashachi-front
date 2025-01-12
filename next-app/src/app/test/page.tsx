@@ -4,6 +4,7 @@ import { Button } from "@/components/Button";
 import { DeleteButton } from "@/components/DeleteButton";
 import { DeleteModal } from "@/components/DeleteModal";
 import { List } from "@/components/List";
+import { Pagination } from "@/components/Pagination";
 import { SearchBox } from "@/components/SearchBox";
 import { Select } from "@/components/Select";
 import { useState } from "react";
@@ -11,11 +12,21 @@ import { useState } from "react";
 export default function Page() {
   const [deleteModalFlg, setDeleteModalFlg] = useState(false);
   const [serchBoxValue, setSearchBoxValue] = useState("");
+  const [paginationProps, setPaginationProps] = useState({
+    currentPage: 1,
+    lastPage: 10,
+    onClick: (page: number) => {
+      setPaginationProps({
+        ...paginationProps,
+        currentPage: page,
+      });
+    },
+  });
 
   return (
     <>
       <div className="pb-2">Listコンポーネント</div>
-      <List title="コンポーネント一覧">
+      <List title="コンポーネント一覧" height="100%">
         <div className="flex flex-col gap-8">
           <div>
             <div className="pb-2">Buttonコンポーネント</div>
@@ -41,14 +52,14 @@ export default function Page() {
             <DeleteModal
               isShow={deleteModalFlg}
               deleteItems={[
-                "xxx",
-                "xxx",
-                "xxx",
-                "xxx",
-                "xxx",
-                "xxx",
-                "xxx",
-                "xxx",
+                "xxxxxxxx",
+                "xxxxxxxx",
+                "xxxxxxxx",
+                "xxxxxxxx",
+                "xxxxxxxx",
+                "xxxxxxxx",
+                "xxxxxxxx",
+                "xxxxxxxx",
               ]}
               onDelete={() => console.log("success")}
               onClese={() => setDeleteModalFlg(false)}
@@ -73,6 +84,10 @@ export default function Page() {
               ]}
               multi={true}
             />
+          </div>
+          <div>
+            <div className="pb-2">Paginationコンポーネント</div>
+            <Pagination {...paginationProps} />
           </div>
         </div>
       </List>
