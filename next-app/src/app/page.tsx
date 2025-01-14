@@ -20,8 +20,8 @@ export default function Home() {
             </code>
             .
           </li>
-          <li>じゅんぺいのgit</li>
-          <li>りょうたのgit</li>
+          <li>jumpei's git</li>
+          <li>ryota's git</li>
         </ol>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
