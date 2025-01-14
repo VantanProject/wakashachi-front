@@ -21,6 +21,7 @@ export default function Home() {
             .
           </li>
           <li>じゅんぺいのgit</li>
+          <li>りょうたのgit</li>
         </ol>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
