@@ -13,7 +13,7 @@ export interface MenuIndexResponse {
     menus: Array<{
         id: number;
         name: string;
-        updated_at: string;
+        updatedAt: string;
     }>
     ids: number[];
     lastPage: number;
