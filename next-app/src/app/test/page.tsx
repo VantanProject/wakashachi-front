@@ -7,6 +7,33 @@ import { List } from "@/components/List";
 import { Pagination } from "@/components/Pagination";
 import { SearchBox } from "@/components/SearchBox";
 import { Select } from "@/components/Select";
+import { EggIcon } from "@/components/allergies/EggIcon";
+import { MilkIcon } from "@/components/allergies/MilkIcon";
+import { WheatIcon } from "@/components/allergies/WheatIcon";
+import { SobaIcon } from "@/components/allergies/SobaIcon";
+import { PeanutsIcon } from "@/components/allergies/PeanutsIcon";
+import { ShrinpIcon } from "@/components/allergies/ShrinpIcon";
+import { CrabIcon } from "@/components/allergies/CrabIcon";
+import { AbaloneIcon } from "@/components/allergies/AbaloneIcon";
+import { SquidIcon } from "@/components/allergies/SquidIcon";
+import { SalmonRoeIcon } from "@/components/allergies/SalmonRoeIcon";
+import { OrangeIcon } from "@/components/allergies/OrangeIcon";
+import { KiwiIcon } from "@/components/allergies/KiwiIcon";
+import { BeefIcon } from "@/components/allergies/BeefIcon";
+import { WalnutsIcon } from "@/components/allergies/WalnutsIcon";
+import { SakeIcon } from "@/components/allergies/SakeIcon";
+import { SabaIcon } from "@/components/allergies/SabaIcon";
+import { SoybeanIcon } from "@/components/allergies/SoybeanIcon";
+import { ChickenIcon } from "@/components/allergies/ChickenIcon";
+import { BananaIcon } from "@/components/allergies/BananaIcon";
+import { PorkIcon } from "@/components/allergies/PorkIcon";
+import { MatsutakeIcon } from "@/components/allergies/MatsutakeIcon";
+import { PeachIcon } from "@/components/allergies/PeachIcon";
+import { YamIcon } from "@/components/allergies/YamIcon";
+import { AppleIcon } from "@/components/allergies/AppleIcon";
+import { GelatinIcon } from "@/components/allergies/GelatinIcon";
+import { SesameIcon } from "@/components/allergies/SesameIcon";
+import { CashewIcon } from "@/components/allergies/CashewIcon";
 import { useState } from "react";
 
 export default function Page() {
@@ -88,6 +115,38 @@ export default function Page() {
           <div>
             <div className="pb-2">Paginationコンポーネント</div>
             <Pagination {...paginationProps} />
+          </div>
+          <div>
+            <div className="pb-2">allergiesIcon コンポーネント</div>
+            <ul className="flex gap-3">
+              <li><EggIcon size="large"/></li>
+              <li><MilkIcon/></li>
+              <li><WheatIcon/></li>
+              <li><SobaIcon /></li>
+              <li><PeanutsIcon /></li>
+              <li><ShrinpIcon /></li>
+              <li><CrabIcon /></li>
+              <li><AbaloneIcon size="large" /></li>
+              <li><SquidIcon /></li>
+              <li><SalmonRoeIcon /></li>
+              <li><OrangeIcon /></li>
+              <li><KiwiIcon /></li>
+              <li><BeefIcon /></li>
+              <li><WalnutsIcon /></li>
+              <li><SakeIcon /></li>
+              <li><SabaIcon /></li>
+              <li><SoybeanIcon /></li>
+              <li><ChickenIcon /></li>
+              <li><BananaIcon /></li>
+              <li><PorkIcon /></li>
+              <li><MatsutakeIcon /></li>
+              <li><PeachIcon /></li>
+              <li><YamIcon /></li>
+              <li><AppleIcon /></li>
+              <li><GelatinIcon /></li>
+              <li><SesameIcon /></li>
+              <li><CashewIcon /></li>
+            </ul>
           </div>
         </div>
       </List>
