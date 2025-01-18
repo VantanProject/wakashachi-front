@@ -8,6 +8,7 @@ import { Pagination } from "@/components/Pagination";
 import { SearchBox } from "@/components/SearchBox";
 import { Select } from "@/components/Select";
 import { useState } from "react";
+import { allergyComponents, AllergyIcon } from "@/components/AllergyIcon";
 
 export default function Page() {
   const [deleteModalFlg, setDeleteModalFlg] = useState(false);
@@ -33,14 +34,14 @@ export default function Page() {
             <Button href="#">ボタン</Button>
           </div>
           <div>
-            <div className="pb-2">{`DeleteButtonコンポーネント isCheck={true}`}</div>
+            <div className="pb-2">{`DeleteButtonコンポーネント　isCheck={true}`}</div>
             <DeleteButton
               onClick={() => console.log("success")}
               isCheck={true}
             />
           </div>
           <div>
-            <div className="pb-2">{`DeleteButtonコンポーネント isCheck={false}`}</div>
+            <div className="pb-2">{`DeleteButtonコンポーネント　isCheck={false}`}</div>
             <DeleteButton
               onClick={() => console.log("success")}
               isCheck={false}
@@ -88,6 +89,30 @@ export default function Page() {
           <div>
             <div className="pb-2">Paginationコンポーネント</div>
             <Pagination {...paginationProps} />
+          </div>
+          <div>
+            <div className="pb-2">
+              {`AllergyIconコンポーネント　sizeCategory="small"`}
+            </div>
+            <ul className="flex gap-3">
+              {Object.keys(allergyComponents).map((key, index) => (
+                <li key={index}>
+                  <AllergyIcon allergyType={key} sizeCategory="small" />
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <div className="pb-2">
+              {`AllergyIconコンポーネント　sizeCategory="large"`}
+            </div>
+            <ul className="flex gap-3">
+              {Object.keys(allergyComponents).map((key, index) => (
+                <li key={index}>
+                  <AllergyIcon allergyType={key} sizeCategory="large" />
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </List>
