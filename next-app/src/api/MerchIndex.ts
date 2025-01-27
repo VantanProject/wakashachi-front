@@ -16,7 +16,7 @@ export interface MerchIndexResponse {
         name: string;
         allergyNames: string[];
         price: number;
-        updated_at: string;
+        updatedAt: string;
     }>
     ids: number[];
     lastPage: number;

@@ -15,7 +15,7 @@ export function Header () {
       {isShow && (
         <>
           <div className="h-[70px]" />
-          <div className="fixed top-0 left-0 w-full bg-baseColor border-b-2 border-text h-[70px]">
+          <div className="fixed top-0 left-0 w-full bg-baseColor border-b-2 border-text h-[70px] z-30">
             <nav className="flex items-center justify-between mx-8 h-full">
               <Image
                 src="/wakalogo.png"
