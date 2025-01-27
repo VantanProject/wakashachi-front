@@ -50,7 +50,7 @@ export function MenuTable({
 
   return (
     <>
-      <div className="overflow-auto rounded-xl border border-text bg-baseColor h-[620px]">
+      <div className="overflow-auto rounded-xl border border-text bg-baseColor h-[calc(100vh-280px)]">
         <table className="w-full">
           <thead className="h-14 bg-textOpacity text-baseColor">
             <tr>
