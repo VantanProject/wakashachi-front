@@ -8,8 +8,8 @@ export interface MerchStoreProps {
       name: string;
     }>;
     allergyIds: number[];
-    price: number;
-    imgData: File;
+    price: number | null;
+    imgData: File | null;
   };
 }
 
@@ -29,16 +29,25 @@ export async function MerchStore({
   const api_url = `${process.env.NEXT_PUBLIC_API_URL}/merch`;
   const token = Cookies.get("AuthToken");
   try {
+    const formData = new FormData();
+    if (merch.imgData) {
+      formData.append('merch[imgData]', merch.imgData); // imgData はファイルとして追加
+    }
+
     const response = await axios.post<
       MerchStoreSuccessResponse | MerchStoreErrorResponse
     >(
       api_url,
       {
-        merch: merch,
+        merch: {
+          ...merch,
+          imgData: formData.get("merch[imgData]")
+        },
       },
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data"
         },
       }
     );
