@@ -31,9 +31,10 @@ export default function Page() {
   const [selectedPageCount, setSelectedPageCount] = useState<number | null>(
     null
   );
-  const [selectItem, setSelectItem] = useState<
-    MenuStoreProps["menu"]["pages"][number]["items"][number] | null
-  >(null);
+  const [selectedItem, setSelectedItem] = useState<{
+    pageIndex: number;
+    itemIndex: number;
+  } | null>(null);
 
   // 検索ロジック
   const [merches, setMerches] = useState<MerchIndexResponse["merches"]>([]);
@@ -48,7 +49,7 @@ export default function Page() {
       setMerches([...merches, ...response.merches]);
     }
     if (response.merches.length !== 0) {
-        setSearch({ ...search, currentPage: search.currentPage + 1 });
+      setSearch({ ...search, currentPage: search.currentPage + 1 });
     }
   }, [search]);
   useEffect(() => {
@@ -71,14 +72,41 @@ export default function Page() {
                 ...pages,
                 items: [
                   ...pages.items,
-                  {
-                    type: "merch",
-                    merchId: Number(dragId),
-                    top: 200,
-                    left: 80,
-                    width: 200,
-                    height: 200,
-                  },
+                  dragId === "text"
+                    ? {
+                        type: "text",
+                        color: "#000000",
+                        width: 80,
+                        height: 40,
+                        top: 200,
+                        left: 80,
+                        translations: [
+                          {
+                            languageId: 1,
+                            text: "テキスト",
+                          },
+                          {
+                            languageId: 2,
+                            text: "テキスト",
+                          },
+                          {
+                            languageId: 3,
+                            text: "テキスト",
+                          },
+                          {
+                            languageId: 4,
+                            text: "テキスト",
+                          },
+                        ],
+                      }
+                    : {
+                        type: "merch",
+                        merchId: Number(dragId),
+                        top: 200,
+                        left: 80,
+                        width: 200,
+                        height: 200,
+                      },
                 ],
               };
             }
@@ -157,9 +185,11 @@ export default function Page() {
       }));
     };
 
+    useEffect(() => console.log(menu), [menu]);
+
   return (
     <DndContext onDragEnd={onDragEnd}>
-      <div className="grid grid-cols-[4fr_1fr]">
+      <div className="flex">
         <div className="overflow-auto w-full z-10" id="mobile-view">
           <div className="flex gap-28 w-fit pr-20 pt-10">
             {Array.from({ length: menu.pages.length }, (_, i) => i + 1).map(
@@ -190,88 +220,104 @@ export default function Page() {
                           onDragStop={onDragStop(pageIndex, itemIndex)}
                           onResizeStop={onResizeStop(pageIndex, itemIndex)}
                         >
-                          {item.type === "merch" && (
-                            <div className="relative bg-gray-100 overflow-hidden w-full h-full">
-                              <Image
-                                className="absolute top-0 w-full h-auto"
-                                src={
-                                  merches.find(
-                                    (merch) => merch.id === item.merchId
-                                  )?.url || ""
-                                }
-                                width={100}
-                                height={100}
-                                alt=""
-                                draggable={false}
-                              />
-
-                              <div className="absolute bottom-1/3 w-full p-1 flex gap-1 justify-end">
-                                {merches
-                                  .find((merch) => merch.id === item.merchId)
-                                  ?.allergyNames.map((name) => (
-                                    <AllergyIcon
-                                      allergyType={name}
-                                      sizeCategory="large"
-                                    />
-                                  ))}
-                              </div>
-                              <div
-                                className="absolute bottom-0 h-1/3 bg-baseColor w-full p-2"
-                                style={{
-                                  fontSize: `${Math.min(
-                                    item.width / 12,
-                                    16
-                                  )}px`,
-                                }}
-                              >
-                                <div className="h-3/5">
-                                  {
+                          <div
+                            className="w-full h-full"
+                            onClick={() =>
+                              setSelectedItem({ pageIndex, itemIndex })
+                            }
+                          >
+                            {item.type === "merch" ? (
+                              <div className="relative bg-gray-100 overflow-hidden w-full h-full">
+                                <Image
+                                  className="absolute top-0 w-full h-auto"
+                                  src={
                                     merches.find(
                                       (merch) => merch.id === item.merchId
-                                    )?.name
+                                    )?.url || ""
                                   }
-                                </div>
-                                <div className="text-right">
-                                  {
-                                    merches.find(
-                                      (merch) => merch.id === item.merchId
-                                    )?.price
-                                  }
-                                  円（税込）
-                                </div>
-                              </div>
+                                  width={100}
+                                  height={100}
+                                  alt=""
+                                  draggable={false}
+                                />
 
-                              <button
-                                className="absolute top-2 right-2 bg-black opacity-30 rounded-full"
-                                onClick={() => {
-                                  const newPages = menu.pages.map((page) =>
-                                    page.count === pageIndex
-                                      ? {
-                                          ...page,
-                                          items: page.items.filter(
-                                            (_, index) => index !== itemIndex
-                                          ),
-                                        }
-                                      : page
-                                  );
-                                  setMenu({
-                                    ...menu,
-                                    pages: newPages,
-                                  });
-                                }}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  height="24px"
-                                  viewBox="0 -960 960 960"
-                                  width="24px"
-                                  fill="#ffffff"
+                                <div className="absolute bottom-1/3 w-full p-1 flex gap-1 justify-end">
+                                  {merches
+                                    .find((merch) => merch.id === item.merchId)
+                                    ?.allergyNames.map((name) => (
+                                      <AllergyIcon
+                                        allergyType={name}
+                                        sizeCategory="large"
+                                      />
+                                    ))}
+                                </div>
+                                <div
+                                  className="absolute bottom-0 h-1/3 bg-baseColor w-full p-2"
+                                  style={{
+                                    fontSize: `${Math.min(
+                                      item.width / 12,
+                                      16
+                                    )}px`,
+                                  }}
                                 >
-                                  <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-                                </svg>
-                              </button>
-                            </div>
-                          )}
+                                  <div className="h-3/5">
+                                    {
+                                      merches.find(
+                                        (merch) => merch.id === item.merchId
+                                      )?.name
+                                    }
+                                  </div>
+                                  <div className="text-right">
+                                    {
+                                      merches.find(
+                                        (merch) => merch.id === item.merchId
+                                      )?.price
+                                    }
+                                    円（税込）
+                                  </div>
+                                </div>
+
+                                <button
+                                  className="absolute top-2 right-2 bg-black opacity-30 rounded-full"
+                                  onClick={() => {
+                                    const newPages = menu.pages.map((page) =>
+                                      page.count === pageIndex
+                                        ? {
+                                            ...page,
+                                            items: page.items.filter(
+                                              (_, index) => index !== itemIndex
+                                            ),
+                                          }
+                                        : page
+                                    );
+                                    setMenu({
+                                      ...menu,
+                                      pages: newPages,
+                                    });
+                                  }}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    height="24px"
+                                    viewBox="0 -960 960 960"
+                                    width="24px"
+                                    fill="#ffffff"
+                                  >
+                                    <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                                  </svg>
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="text-text border border-dotted border-textOpacity w-full h-full">
+                                {
+                                  item.translations.find(
+                                    (translation) =>
+                                      translation.languageId === 1
+                                  )?.text
+                                }
+                              </div>
+                            )}
+                          </div>
                         </Rnd>
                       ))}
 
@@ -309,24 +355,27 @@ export default function Page() {
 
           <div className="flex flex-col gap-2 px-2">
             <Draggable id="drag-text">
-                <div className="border border-text rounded-xl p-1 flex items-center gap-2">
-                    <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="24px"
-                    viewBox="0 -960 960 960"
-                    width="24px"
-                    fill="currentColor"
-                    >
-                        <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-                    </svg>
-                    <div>新規テキスト</div>
-                </div>
+              <div className="border border-text rounded-xl p-1 flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="currentColor"
+                >
+                  <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                </svg>
+                <div>新規テキスト</div>
+              </div>
             </Draggable>
           </div>
 
-          <div className="flex flex-col gap-2 overflow-auto h-[calc(100vh-240px)]" id="sidebar">
+          <div
+            className="flex flex-col gap-2 overflow-auto h-[calc(100vh-240px)]"
+            id="sidebar"
+          >
             {merches.map((merch) => (
-                //ここでスクロールのどの位置なのか（top）を取得してドラッグ中の要素の位置を修正する
+              //ここでスクロールのどの位置なのか（top）を取得してドラッグ中の要素の位置を修正する
               <Draggable id={`drag-${merch.id}`}>
                 <div
                   key={merch.id}
