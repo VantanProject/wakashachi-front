@@ -71,7 +71,7 @@ export function Draggable({ id, children }: DraggableProps) {
   const style: React.CSSProperties = {
     transform: transform
       ? isHovered && id !== "drag-text"
-        ? `translate3d(${transform.x - scrollX}px, ${position.y - 240}px, 0)`
+        ? `translate3d(${transform.x - scrollX}px, ${position.y - 260}px, 0)`
         : `translate3d(${transform.x - scrollX}px, ${position.y - 180}px, 0)`
       : undefined, // "mobile-view" のスクロール位置を考慮してズレを補正
     zIndex: transform ? 99 : undefined, // transformがある場合はzIndexを99に設定

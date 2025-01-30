@@ -15,6 +15,7 @@ import { Rnd } from "react-rnd";
 import { DraggableEvent, DraggableData } from "react-draggable";
 import { MenuPageEditAbsolute } from "@/components/MenuPageEditAbsolute";
 import { AllergyIcon } from "@/components/AllergyIcon";
+import { SelectedItemController } from "@/components/SelectedItemController";
 
 export default function Page() {
   const [menu, setMenu] = useState<MenuStoreProps["menu"]>({
@@ -76,26 +77,26 @@ export default function Page() {
                     ? {
                         type: "text",
                         color: "#000000",
-                        width: 80,
+                        width: 150,
                         height: 40,
                         top: 200,
                         left: 80,
                         translations: [
                           {
                             languageId: 1,
-                            text: "テキスト",
+                            text: "日本語テキスト",
                           },
                           {
                             languageId: 2,
-                            text: "テキスト",
+                            text: "英語テキスト",
                           },
                           {
                             languageId: 3,
-                            text: "テキスト",
+                            text: "中国語テキスト",
                           },
                           {
                             languageId: 4,
-                            text: "テキスト",
+                            text: "韓国語テキスト",
                           },
                         ],
                       }
@@ -185,18 +186,27 @@ export default function Page() {
       }));
     };
 
-    useEffect(() => console.log(menu), [menu]);
-
   return (
     <DndContext onDragEnd={onDragEnd}>
+      {selectedItem && (
+        <SelectedItemController
+          menu={menu}
+          setMenu={setMenu}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
+        />
+      )}
+
       <div className="flex">
-        <div className="overflow-auto w-full z-10" id="mobile-view">
+        <div
+          className={`overflow-auto w-full p-2 ${selectedItem && "pt-28"}`}
+          id="mobile-view"
+        >
           <div className="flex gap-28 w-fit pr-20 pt-10">
             {Array.from({ length: menu.pages.length }, (_, i) => i + 1).map(
               (pageIndex) => (
-                <Droppable id={`drop-${pageIndex}`}>
+                <Droppable id={`drop-${pageIndex}`} key={pageIndex}>
                   <div
-                    key={pageIndex}
                     className={`w-[360px] h-[720px] bg-gray-300 border-4 border-black rounded-[52px] relative`}
                     onClick={() => {
                       setSelectedPageCount(pageIndex);
@@ -308,7 +318,14 @@ export default function Page() {
                                 </button>
                               </div>
                             ) : (
-                              <div className="text-text border border-dotted border-textOpacity w-full h-full">
+                              <div
+                                className="border border-dotted border-textOpacity w-full h-full z-20"
+                                style={{
+                                  color:
+                                    menu.pages[pageIndex - 1].items[itemIndex]
+                                      ?.color ?? "",
+                                }}
+                              >
                                 {
                                   item.translations.find(
                                     (translation) =>
@@ -370,13 +387,18 @@ export default function Page() {
             </Draggable>
           </div>
 
-          <div
-            className="flex flex-col gap-2 overflow-auto h-[calc(100vh-240px)]"
-            id="sidebar"
-          >
+          <div className="px-2">
+            <input
+              value={search.name}
+              className="outline-none border border-text rounded-xl p-1 pl-2 w-full"
+              placeholder="商品検索"
+            />
+          </div>
+
+          <div className="flex flex-col gap-2 overflow-auto h-[calc(100vh-240px)]">
             {merches.map((merch) => (
               //ここでスクロールのどの位置なのか（top）を取得してドラッグ中の要素の位置を修正する
-              <Draggable id={`drag-${merch.id}`}>
+              <Draggable id={`drag-${merch.id}`} key={merch.id}>
                 <div
                   key={merch.id}
                   className="bg-white p-2 h-12 flex gap-2 items-center rounded-xl transition duration-300 hover:bg-accentLight hover:shadow-lg"
