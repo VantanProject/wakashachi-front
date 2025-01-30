@@ -160,8 +160,8 @@ export default function Page() {
   return (
     <DndContext onDragEnd={onDragEnd}>
       <div className="grid grid-cols-[4fr_1fr]">
-        <div className="overflow-auto w-full" id="mobile-view">
-          <div className="flex gap-28 w-fit pr-16 pt-10">
+        <div className="overflow-auto w-full z-10" id="mobile-view">
+          <div className="flex gap-28 w-fit pr-20 pt-10">
             {Array.from({ length: menu.pages.length }, (_, i) => i + 1).map(
               (pageIndex) => (
                 <Droppable id={`drop-${pageIndex}`}>
@@ -289,7 +289,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="bg-white border border-text p-2">
+        <div className="bg-white border border-text p-2 flex flex-col gap-2">
           <div className="h-20 border-b border-text flex items-center p-2 gap-2">
             <button className="w-14 h-14 flex items-center justify-center rounded-full hover:bg-gray-100">
               ＞
@@ -307,13 +307,30 @@ export default function Page() {
             />
           </div>
 
+          <div className="flex flex-col gap-2 px-2">
+            <Draggable id="drag-text">
+                <div className="border border-text rounded-xl p-1 flex items-center gap-2">
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="currentColor"
+                    >
+                        <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                    </svg>
+                    <div>新規テキスト</div>
+                </div>
+            </Draggable>
+          </div>
+
           <div className="flex flex-col gap-2 overflow-auto h-[calc(100vh-240px)]" id="sidebar">
             {merches.map((merch) => (
+                //ここでスクロールのどの位置なのか（top）を取得してドラッグ中の要素の位置を修正する
               <Draggable id={`drag-${merch.id}`}>
-                <div className="relative">
                 <div
                   key={merch.id}
-                  className="p-2 h-12 flex gap-2 items-center rounded-xl transition duration-300 hover:bg-accentLight hover:shadow-lg"
+                  className="bg-white p-2 h-12 flex gap-2 items-center rounded-xl transition duration-300 hover:bg-accentLight hover:shadow-lg"
                 >
                   <Image
                     className="w-10 h-10 object-cover object-center rounded-lg"
@@ -322,8 +339,7 @@ export default function Page() {
                     height={100}
                     alt={merch.name}
                   />
-                  {merch.name}
-                </div>
+                  <div className="w-[200px]">{merch.name}</div>
                 </div>
               </Draggable>
             ))}

@@ -51,15 +51,32 @@ export function Draggable({ id, children }: DraggableProps) {
     };
   }, []);
 
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (event: any) => {
+      setPosition({ x: event.clientX, y: event.clientY });
+    };
+
+    // document.body でマウス移動を追跡
+    document.body.addEventListener('mousemove', handleMouseMove);
+
+    // クリーンアップ
+    return () => {
+      document.body.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   // スクロール位置を考慮した位置調整
   const style: React.CSSProperties = {
     transform: transform
-      ? isHovered
-        ? `translate3d(${transform.x - scrollX}px, ${transform.y - scrollY}px, 0)`
-        : `translate3d(${transform.x}px, ${transform.y}px, 0)`
+      ? isHovered && id !== "drag-text"
+        ? `translate3d(${transform.x - scrollX}px, ${position.y - 240}px, 0)`
+        : `translate3d(${transform.x - scrollX}px, ${position.y - 180}px, 0)`
       : undefined, // "mobile-view" のスクロール位置を考慮してズレを補正
     zIndex: transform ? 99 : undefined, // transformがある場合はzIndexを99に設定
     position: transform ? "absolute" : undefined,
+    opacity: transform && !isHovered ? 0 : 100,
   };
 
   return (
