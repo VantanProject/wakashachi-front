@@ -14,6 +14,7 @@ export interface MerchIndexResponse {
     merches: Array<{
         id: number;
         name: string;
+        url: string;
         allergyNames: string[];
         price: number;
         updatedAt: string;
