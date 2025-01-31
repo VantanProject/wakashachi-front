@@ -121,7 +121,7 @@ export function MenuTable({
                     <Link href="#" className="flex justify-center">
                       <Image
                         className="mr-4"
-                        src="./menu_table_edit.svg"
+                        src="./edit-icon.svg"
                         width={28}
                         height={28}
                         alt="メニュー一覧テーブルの編集アイコン"
@@ -133,7 +133,7 @@ export function MenuTable({
                     <button className="flex mx-auto">
                       <Image
                         className="mr-4"
-                        src="./menu_table_qrcode.svg"
+                        src="./qrcode-icon.svg"
                         width={28}
                         height={28}
                         alt="メニュー一覧テーブルのQRアイコン"
@@ -145,7 +145,7 @@ export function MenuTable({
                     <button className="flex mx-auto">
                       <Image
                         className="mr-4"
-                        src="./menu_table_browsing.svg"
+                        src="./browsing-icon.svg"
                         width={28}
                         height={28}
                         alt="メニュー一覧テーブルの閲覧アイコン"
