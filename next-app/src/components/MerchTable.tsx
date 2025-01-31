@@ -101,7 +101,7 @@ export function MerchTable({
               <td className="text-center w-36 border-x border-text">
                 値段
               </td>
-              <td className="text-center w-[208px] border-x border-text">
+              <td className="text-center w-[227px] border-x border-text">
                 アレルギー
               </td>
               <td className="w-36"></td>
