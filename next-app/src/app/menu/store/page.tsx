@@ -1,6 +1,6 @@
 "use client";
 
-import { MenuStoreProps } from "@/api/MenuStore";
+import { MenuStore, MenuStoreProps } from "@/api/MenuStore";
 import {
   MerchIndex,
   MerchIndexProps,
@@ -16,11 +16,13 @@ import { DraggableEvent, DraggableData } from "react-draggable";
 import { MenuPageEditAbsolute } from "@/components/MenuPageEditAbsolute";
 import { AllergyIcon } from "@/components/AllergyIcon";
 import { SelectedItemController } from "@/components/SelectedItemController";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
   const [menu, setMenu] = useState<MenuStoreProps["menu"]>({
     name: "",
-    color: "",
+    color: "#7d7d7d",
     pages: [
       {
         count: 1,
@@ -36,6 +38,7 @@ export default function Page() {
     pageIndex: number;
     itemIndex: number;
   } | null>(null);
+  const [languageId, setLanguageId] = useState(1);
 
   // 検索ロジック
   const [merches, setMerches] = useState<MerchIndexResponse["merches"]>([]);
@@ -186,6 +189,19 @@ export default function Page() {
       }));
     };
 
+  const storeApi = async () => {
+    const response = await MenuStore({
+      menu: menu,
+    });
+
+    if (response.success) {
+      alert(response.message);
+      router.push("/menu");
+    } else {
+      alert(response.errors[0]);
+    }
+  };
+
   return (
     <DndContext onDragEnd={onDragEnd}>
       {selectedItem && (
@@ -207,7 +223,10 @@ export default function Page() {
               (pageIndex) => (
                 <Droppable id={`drop-${pageIndex}`} key={pageIndex}>
                   <div
-                    className={`w-[360px] h-[720px] bg-gray-300 border-4 border-black rounded-[52px] relative`}
+                    className={`w-[360px] h-[720px] border-4 border-black rounded-[52px] relative overflow-hidden`}
+                    style={{
+                      backgroundColor: menu.color,
+                    }}
                     onClick={() => {
                       setSelectedPageCount(pageIndex);
                     }}
@@ -216,6 +235,7 @@ export default function Page() {
                       .find((page) => page.count === pageIndex)
                       ?.items.map((item, itemIndex) => (
                         <Rnd
+                          key={itemIndex}
                           bounds="parent"
                           position={{
                             x: item.left,
@@ -254,10 +274,11 @@ export default function Page() {
                                 <div className="absolute bottom-1/3 w-full p-1 flex gap-1 justify-end">
                                   {merches
                                     .find((merch) => merch.id === item.merchId)
-                                    ?.allergyNames.map((name) => (
+                                    ?.allergyNames.map((name, allergyIndex) => (
                                       <AllergyIcon
                                         allergyType={name}
                                         sizeCategory="large"
+                                        key={allergyIndex}
                                       />
                                     ))}
                                 </div>
@@ -272,9 +293,15 @@ export default function Page() {
                                 >
                                   <div className="h-3/5">
                                     {
-                                      merches.find(
-                                        (merch) => merch.id === item.merchId
-                                      )?.name
+                                      merches
+                                        .find(
+                                          (merch) => merch.id === item.merchId
+                                        )
+                                        ?.translations.find(
+                                          (translation) =>
+                                            translation.languageId ===
+                                            languageId
+                                        )?.name
                                     }
                                   </div>
                                   <div className="text-right">
@@ -352,11 +379,9 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="bg-white border border-text p-2 flex flex-col gap-2">
+        {/* サイドバー */}
+        <div className="bg-white border border-text p-2 flex flex-col gap-2 w-80">
           <div className="h-20 border-b border-text flex items-center p-2 gap-2">
-            <button className="w-14 h-14 flex items-center justify-center rounded-full hover:bg-gray-100">
-              ＞
-            </button>
             <input
               className="outline-none h-full"
               placeholder="メニュー表名"
@@ -365,6 +390,16 @@ export default function Page() {
                 setMenu((menu) => ({
                   ...menu,
                   name: e.target.value,
+                }));
+              }}
+            />
+            <input
+              type="color"
+              value={menu.color}
+              onChange={(e) => {
+                setMenu((menu) => ({
+                  ...menu,
+                  color: e.target.value,
                 }));
               }}
             />
@@ -392,6 +427,12 @@ export default function Page() {
               value={search.name}
               className="outline-none border border-text rounded-xl p-1 pl-2 w-full"
               placeholder="商品検索"
+              onChange={(e) => {
+                setSearch((search) => ({
+                  ...search,
+                  name: e.target.value,
+                }));
+              }}
             />
           </div>
 
@@ -416,6 +457,28 @@ export default function Page() {
             ))}
           </div>
         </div>
+        {/* サイドバー */}
+
+        {/* 保存ボタン */}
+        <div className="fixed bottom-5 right-72">
+          <div className="flex flex-col gap-2">
+            <select onChange={(e) => setLanguageId(Number(e.target.value))}>
+              <option value={1}>日本語</option>
+              <option value={2}>英語</option>
+              <option value={3}>中国語</option>
+              <option value={4}>韓国語</option>
+            </select>
+            <button
+              className="w-fit text-accent text-lg font-bold bg-baseColor px-10 py-4 rounded-md border-[1px] border-accent hover:ring-1 ring-accent hover:bg-accentLight transition duration-300"
+              onClick={() => {
+                storeApi();
+              }}
+            >
+              保存
+            </button>
+          </div>
+        </div>
+        {/* 保存ボタン */}
       </div>
     </DndContext>
   );

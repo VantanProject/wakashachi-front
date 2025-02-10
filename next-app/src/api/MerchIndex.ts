@@ -18,6 +18,10 @@ export interface MerchIndexResponse {
         allergyNames: string[];
         price: number;
         updatedAt: string;
+        translations: Array<{
+            languageId: number;
+            name: string;
+        }>
     }>
     ids: number[];
     lastPage: number;
