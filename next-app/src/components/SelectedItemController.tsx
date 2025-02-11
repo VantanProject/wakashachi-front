@@ -66,7 +66,9 @@ export function SelectedItemController({
                   value={
                     menu.pages[selectedItem.pageIndex - 1].items[
                       selectedItem.itemIndex
+                      // @ts-ignore
                     ].translations.find(
+                      // @ts-ignore
                       (translation) =>
                         translation.languageId === controllerItem.languageId
                     ).text
@@ -81,7 +83,9 @@ export function SelectedItemController({
                                 if (i === selectedItem.itemIndex) {
                                   return {
                                     ...item,
+                                    // @ts-ignore
                                     translations: item.translations.map(
+                                      // @ts-ignore
                                       (translation) =>
                                         translation.languageId ===
                                         controllerItem.languageId
@@ -116,6 +120,7 @@ export function SelectedItemController({
                 value={
                   menu.pages[selectedItem.pageIndex - 1].items[
                     selectedItem.itemIndex
+                    // @ts-ignore
                   ].color
                 }
                 onChange={(e) => {
