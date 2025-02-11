@@ -223,7 +223,7 @@ export default function Page() {
               (pageIndex) => (
                 <Droppable id={`drop-${pageIndex}`} key={pageIndex}>
                   <div
-                    className={`w-[360px] h-[720px] border-4 border-black rounded-[52px] relative overflow-hidden`}
+                    className={`w-[360px] h-[720px] border-4 border-black rounded-[52px] relative`}
                     style={{
                       backgroundColor: menu.color,
                     }}

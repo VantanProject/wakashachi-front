@@ -21,6 +21,7 @@ export function QRCodeModal({
   };
   const qrRef = useRef(null);
   const downloadQRCode = () => {
+    if (!qrRef.current) return;
     const svg = qrRef.current;
     const svgData = new XMLSerializer().serializeToString(svg);
     const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
