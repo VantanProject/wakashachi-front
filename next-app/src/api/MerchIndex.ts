@@ -14,9 +14,14 @@ export interface MerchIndexResponse {
     merches: Array<{
         id: number;
         name: string;
+        url: string;
         allergyNames: string[];
         price: number;
         updatedAt: string;
+        translations: Array<{
+            languageId: number;
+            name: string;
+        }>
     }>
     ids: number[];
     lastPage: number;

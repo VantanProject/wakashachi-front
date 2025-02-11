@@ -5,10 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
-export function Header () {
+export function Header() {
   const [isMerchOpen, setIsMerchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isShow = usePathname() !== "/login";
+
+  const pathname = usePathname();
+  const isShow =
+    !(["/login"].includes(pathname) || pathname.startsWith("/user/"));
 
   return (
     <>
@@ -161,4 +164,4 @@ export function Header () {
       )}
     </>
   );
-};
+}

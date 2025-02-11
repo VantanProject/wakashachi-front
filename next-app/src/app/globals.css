@@ -11,3 +11,7 @@
   --text-opacity-color: rgb(77, 69, 53, 0.6);
   --form-error-color: #D80606;
 }
+
+body {
+  overscroll-behavior-x: none;
+}

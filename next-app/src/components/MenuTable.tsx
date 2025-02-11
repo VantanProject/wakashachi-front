@@ -2,6 +2,8 @@ import { MenuIndexProps, MenuIndexResponse } from "@/api/MenuIndex";
 import Link from "next/link";
 import Image from "next/image";
 import { Pagination } from "./Pagination";
+import { useState } from "react";
+import { QRCodeModal } from "./QRCodeModal";
 
 export interface MenuTableProps {
   menus: MenuIndexResponse["menus"]; // メニューデータ
@@ -45,7 +47,10 @@ export function MenuTable({
   currentPage,
   setSerch,
 }: MenuTableProps) {
-  const isAllChecked = JSON.stringify([...checkedIds].sort((a, b) => a - b)) ===
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedMenuId, setSelectedMenuId] = useState<number>(0);
+  const isAllChecked =
+    JSON.stringify([...checkedIds].sort((a, b) => a - b)) ===
     JSON.stringify([...ids].sort((a, b) => a - b));
 
   return (
@@ -91,10 +96,7 @@ export function MenuTable({
           <tbody>
             {menus.map((menu) => {
               return (
-                <tr
-                  className="h-14"
-                  key={menu.id}
-                >
+                <tr className="h-14" key={menu.id}>
                   <td className="border-y border-r border-text" colSpan={2}>
                     <div className="flex">
                       <input
@@ -103,11 +105,14 @@ export function MenuTable({
                         checked={checkedIds.includes(menu.id)}
                         onChange={(e) => {
                           if (e.target.checked) {
-                            setCheckedIds((checkedIds) => [...checkedIds, menu.id])
+                            setCheckedIds((checkedIds) => [
+                              ...checkedIds,
+                              menu.id,
+                            ]);
                           } else {
-                            setCheckedIds((checkedIds) => checkedIds.filter(
-                              (id) => id !== menu.id,
-                            ))
+                            setCheckedIds((checkedIds) =>
+                              checkedIds.filter((id) => id !== menu.id)
+                            );
                           }
                         }}
                       />
@@ -130,7 +135,13 @@ export function MenuTable({
                     </Link>
                   </td>
                   <td className="border border-text">
-                    <button className="flex mx-auto">
+                    <button
+                      className="flex mx-auto"
+                      onClick={() => {
+                        setSelectedMenuId(menu.id);
+                        setIsOpen(true);
+                      }}
+                    >
                       <Image
                         className="mr-4"
                         src="./qrcode-icon.svg"
@@ -162,15 +173,17 @@ export function MenuTable({
           <Pagination
             currentPage={currentPage}
             lastPage={lastPage}
-            onClick={(page: number) => setSerch((serch) => (
-              {
+            onClick={(page: number) =>
+              setSerch((serch) => ({
                 ...serch,
-                currentPage: page 
-              }
-            ))}
+                currentPage: page,
+              }))
+            }
           />
         </div>
       </div>
+
+      <QRCodeModal isOpen={isOpen} selectedMenuId={selectedMenuId} onClose={() => setIsOpen(false)} />
     </>
   );
 }
