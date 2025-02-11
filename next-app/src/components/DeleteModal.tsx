@@ -17,7 +17,7 @@ export function DeleteModal({
   return (
     <>
       {isShow && (
-        <Modal onClese={onClese}>
+        <Modal onClose={onClese}>
           <div className="w-[600px] bg-baseColor rounded-2xl pb-4">
             <div className="bg-accentDark mx-[1px] h-2 rounded-t-2xl" />
             <div className="flex justify-center items-center px-5">
