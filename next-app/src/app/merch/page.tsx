@@ -69,7 +69,7 @@ export default function Page() {
   const [deleteModalFlg, setDeleteModalFlg] = useState(false);
 
   return (
-    <>
+    <div className="p-4">
       <List title="商品一覧">
         <div className="flex justify-between pb-5">
           <div className="flex gap-2">
@@ -125,6 +125,6 @@ export default function Page() {
           setDeleteModalFlg(false);
         }}
       />
-    </>
+    </div>
   );
 }

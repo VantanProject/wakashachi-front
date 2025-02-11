@@ -29,7 +29,7 @@ export default function Page() {
       <div className="fixed w-full h-16 flex items-center justify-between p-2 bg-accentLight z-30">
         <Image
           className="w-auto h-full"
-          src="/wakalogo.png"
+          src="/top-logo.png"
           width={100}
           height={100}
           alt="logo"
