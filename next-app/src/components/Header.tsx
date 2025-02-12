@@ -20,7 +20,7 @@ export function Header() {
           <div className="h-[70px]" />
           <div className="fixed top-0 left-0 w-full bg-baseColor border-b-2 border-text h-[70px] z-30">
             <nav className="flex items-center justify-between mx-8 h-full">
-              <Link href="./">
+              <Link href="/">
                 <Image
                   src="/wakalogo.png"
                   alt="若鯱家のロゴ"
