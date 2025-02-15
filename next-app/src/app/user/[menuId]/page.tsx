@@ -122,7 +122,7 @@ export default function Page() {
               ) : (
                 <div
                   key={itemIndex}
-                  className="absolute"
+                  className="absolute z-10"
                   style={{
                     top: `${(item.top / 720) * 100}%`,
                     left: `${(item.left / 360) * 100}%`,

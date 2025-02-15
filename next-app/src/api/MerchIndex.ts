@@ -28,15 +28,15 @@ export interface MerchIndexResponse {
 }
 
 export async function MerchIndex({ search }: MerchIndexProps): Promise<MerchIndexResponse> {
-    const api_url = `${process.env.NEXT_PUBLIC_API_URL}/merch`;
-    const token = Cookies.get("AuthToken");
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/merch`;
+    const authToken = Cookies.get("authToken");
     try {
-        const response = await axios.get<MerchIndexResponse>(api_url, {
+        const response = await axios.get<MerchIndexResponse>(apiUrl, {
             params: {
                 search: search
             },
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${authToken}`,
             },
         });
         return response.data;

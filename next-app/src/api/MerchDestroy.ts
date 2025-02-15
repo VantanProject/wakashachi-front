@@ -13,12 +13,12 @@ export interface MerchDestroyResponse {
 export async function MerchDestroy({
   ids,
 }: MerchDestroyProps): Promise<MerchDestroyResponse> {
-  const api_url = `${process.env.NEXT_PUBLIC_API_URL}/merch`;
-  const token = Cookies.get("AuthToken");
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/merch`;
+  const authToken = Cookies.get("authToken");
   try {
-    const response = await axios.delete<MerchDestroyResponse>(api_url, {
+    const response = await axios.delete<MerchDestroyResponse>(apiUrl, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${authToken}`,
       },
       params: {
         ids: ids,

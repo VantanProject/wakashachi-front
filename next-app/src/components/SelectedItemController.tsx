@@ -46,7 +46,6 @@ export function SelectedItemController({
     menu.pages[selectedItem.pageIndex - 1].items[selectedItem.itemIndex]
       .type === "merch"
   ) {
-    setSelectedItem(null);
     return undefined;
   }
 
@@ -56,8 +55,8 @@ export function SelectedItemController({
         {menu.pages[selectedItem.pageIndex - 1].items[selectedItem.itemIndex]
           .type === "text" ? (
           <div className="flex h-full items-center">
-            {controllerItems.map((controllerItem) => (
-              <div className="flex flex-col w-48 p-2">
+            {controllerItems.map((controllerItem, controllerItemIndex) => (
+              <div className="flex flex-col w-48 p-2" key={controllerItemIndex}>
                 <label className="text-textOpacity text-sm pl-1">
                   {controllerItem.text}
                 </label>

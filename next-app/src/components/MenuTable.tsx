@@ -78,14 +78,7 @@ export function MenuTable({
               </td>
               <td className="text-center w-40 border-x border-text">
                 <div className="flex justify-center">
-                  作成日時
-                  <Image
-                    className="ml-2"
-                    src="./down-arrow.svg"
-                    width={18}
-                    height={9}
-                    alt="メニュー一覧テーブルのドロップダウンアイコン"
-                  />
+                  更新日時
                 </div>
               </td>
               <td className="w-28" />
@@ -183,7 +176,11 @@ export function MenuTable({
         </div>
       </div>
 
-      <QRCodeModal isOpen={isOpen} selectedMenuId={selectedMenuId} onClose={() => setIsOpen(false)} />
+      <QRCodeModal
+        isOpen={isOpen}
+        selectedMenuId={selectedMenuId}
+        onClose={() => setIsOpen(false)}
+      />
     </>
   );
 }

@@ -1,9 +1,10 @@
 import { MerchIndexProps, MerchIndexResponse } from "@/api/MerchIndex";
-import React from "react";
+import { useState } from "react";
 import { AllergyIcon } from "./AllergyIcon";
 import Image from "next/image";
 import Link from "next/link";
 import { Pagination } from "./Pagination";
+import { MerchPreviewModal } from "./MerchPreviewModal";
 
 export interface MenuTableProps {
   merches: MerchIndexResponse["merches"]; // 商品データ
@@ -60,9 +61,14 @@ export function MerchTable({
   currentPage,
   setSerch,
 }: MenuTableProps) {
-  const isAllChecked = JSON.stringify([...checkedIds].sort((a, b) => a - b)) ===
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedMerch, setSelectedMerch] = useState<
+    MerchIndexResponse["merches"][number] | null
+  >(null);
+  const isAllChecked =
+    JSON.stringify([...checkedIds].sort((a, b) => a - b)) ===
     JSON.stringify([...ids].sort((a, b) => a - b));
-  
+
   return (
     <>
       <div className="overflow-auto rounded-xl border border-text bg-baseColor h-[calc(100vh-280px)]">
@@ -70,37 +76,28 @@ export function MerchTable({
           <thead className="h-14 bg-textOpacity text-baseColor">
             <tr>
               <td className="items-center" colSpan={2}>
-                  <div className="flex w-full">
-                    <input
-                      type="checkbox"
-                      className="appearance-none flex w-5 h-5 border rounded justify-center bg-center mx-8 checked:bg-[url('/check.svg')] checked:bg-accent checked:border-accent checked:bg-contain"
-                      checked={isAllChecked}
-                      onChange={() => {
-                        if (isAllChecked) {
-                          setCheckedIds([]);
-                        } else {
-                          setCheckedIds(ids);
-                        }
-                      }}
-                    />
-                    メニュー名
-                  </div>
-                </td>
-                <td className="text-center w-[208px] border-x border-text">
-                  <div className="flex justify-center">
-                    更新日時
-                    <Image
-                      className="ml-2"
-                      src="./down-arrow.svg"
-                      width={18}
-                      height={9}
-                      alt="商品一覧テーブルのドロップダウンアイコン"
-                    />
-                  </div>
+                <div className="flex w-full">
+                  <input
+                    type="checkbox"
+                    className="appearance-none flex w-5 h-5 border rounded justify-center bg-center mx-8 checked:bg-[url('/check.svg')] checked:bg-accent checked:border-accent checked:bg-contain"
+                    checked={isAllChecked}
+                    onChange={() => {
+                      if (isAllChecked) {
+                        setCheckedIds([]);
+                      } else {
+                        setCheckedIds(ids);
+                      }
+                    }}
+                  />
+                  メニュー名
+                </div>
               </td>
-              <td className="text-center w-36 border-x border-text">
-                値段
+              <td className="text-center w-[208px] border-x border-text">
+                <div className="flex justify-center">
+                  更新日時
+                </div>
               </td>
+              <td className="text-center w-36 border-x border-text">値段</td>
               <td className="text-center w-[227px] border-x border-text">
                 アレルギー
               </td>
@@ -111,10 +108,7 @@ export function MerchTable({
           <tbody>
             {merches.map((merch) => {
               return (
-                <tr
-                  className="h-14"
-                  key={merch.id}
-                >
+                <tr className="h-14" key={merch.id}>
                   <td className="border-y border-r border-text" colSpan={2}>
                     <div className="flex">
                       <input
@@ -123,11 +117,14 @@ export function MerchTable({
                         checked={checkedIds.includes(merch.id)}
                         onChange={(e) => {
                           if (e.target.checked) {
-                            setCheckedIds((checkedIds) => [...checkedIds, merch.id])
+                            setCheckedIds((checkedIds) => [
+                              ...checkedIds,
+                              merch.id,
+                            ]);
                           } else {
-                            setCheckedIds((checkedIds) => checkedIds.filter(
-                              (id) => id !== merch.id,
-                            ));
+                            setCheckedIds((checkedIds) =>
+                              checkedIds.filter((id) => id !== merch.id)
+                            );
                           }
                         }}
                       />
@@ -144,7 +141,10 @@ export function MerchTable({
                     <div className="flex px-4">
                       {merch.allergyNames.map((allergyName) => {
                         return (
-                          <div className="px-1" key={`${merch.id}-${allergyName}`}>
+                          <div
+                            className="px-1"
+                            key={`${merch.id}-${allergyName}`}
+                          >
                             <AllergyIcon
                               allergyType={allergyName}
                               sizeCategory="large"
@@ -167,7 +167,13 @@ export function MerchTable({
                     </Link>
                   </td>
                   <td className="border-y border-l border-text">
-                    <Link href="#" className="flex justify-center">
+                    <button
+                      className="flex justify-center w-full"
+                      onClick={() => {
+                        setSelectedMerch(merch);
+                        setIsOpen(true);
+                      }}
+                    >
                       <Image
                         className="mr-4"
                         src="./detail-icon.svg"
@@ -176,7 +182,7 @@ export function MerchTable({
                         alt="商品一覧テーブルの詳細アイコン"
                       />
                       詳細
-                    </Link>
+                    </button>
                   </td>
                 </tr>
               );
@@ -187,15 +193,22 @@ export function MerchTable({
           <Pagination
             currentPage={currentPage}
             lastPage={lastPage}
-            onClick={(page: number) => setSerch((serch) => (
-              {
+            onClick={(page: number) =>
+              setSerch((serch) => ({
                 ...serch,
-                currentPage: page 
-              }
-            ))}
+                currentPage: page,
+              }))
+            }
           />
         </div>
       </div>
+
+      {isOpen && selectedMerch && (
+        <MerchPreviewModal
+          merch={selectedMerch}
+          onClose={() => setIsOpen(false)}
+        />
+      )}
     </>
   );
 }

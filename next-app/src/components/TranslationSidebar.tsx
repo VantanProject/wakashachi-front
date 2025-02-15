@@ -1,4 +1,5 @@
 import {
+  CompareTranslation,
   CompareTranslationProps,
   CompareTranslationResponse,
 } from "@/api/CompareTranslation";
@@ -28,8 +29,16 @@ export function TranslationSidebar() {
     }
   );
 
+  const [isLoading, setIsLoading] = useState(false);
+  const translationApi = async () => {
+    setIsLoading(true);
+    const response = await CompareTranslation(compareTranslationProps);
+    setResults(response.results);
+    setIsLoading(false);
+  };
+
   return (
-    <div className="fixed left-0 z-10 shadow-2xl shadow-accent">
+    <div className="fixed left-0 z-30 shadow-2xl shadow-accent">
       <div className="relative bg-baseColor pt-14 h-screen">
         <button
           className="absolute top-1/2 left-full bg-baseColor py-1 pr-1 pl-4 rounded-r-3xl shadow-[0_0_10px_0.5px_var(--accent-color)]"
@@ -68,8 +77,19 @@ export function TranslationSidebar() {
           </div>
 
           <div className="flex flex-col gap-5 w-full">
-            <button className="py-2 bg-accent rounded-lg text-baseColor text-xl font-bold">
-              翻訳
+            <button
+              className="h-12 bg-accent rounded-lg text-baseColor text-xl font-bold flex justify-center items-center"
+              onClick={() => translationApi()}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div
+                  className="w-8 h-8 rounded-full border-4 border-baseColor animate-spin"
+                  style={{ borderTopColor: "transparent" }}
+                />
+              ) : (
+                <p>翻訳</p>
+              )}
             </button>
 
             <div className="flex justify-between items-center">

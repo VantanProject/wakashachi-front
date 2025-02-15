@@ -19,7 +19,7 @@ export default function Page() {
     const response = await Login({ email, password });
 
     if (response.success) {
-      Cookies.set('AuthToken', response.token);
+      Cookies.set('authToken', response.token);
       router.push("/");
     } else {
       setIsError(true);

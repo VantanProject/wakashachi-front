@@ -5,8 +5,8 @@ import Image from "next/image";
 import { MerchStoreProps } from "@/api/MerchStore";
 import { AllergySelect, AllergySelectResponse } from "@/api/AllergySelect";
 import { Select, SelectItem } from "./Select";
-import { LanguageSelect } from "./LanguageSelect";
 import { TranslationSidebar } from "./TranslationSidebar";
+import { MerchPreviewModal } from "./MerchPreviewModal";
 
 export interface MerchCustomProps {
   type: "store" | "update";
@@ -21,6 +21,7 @@ export function MerchCustom({
   setMerch,
   merch,
 }: MerchCustomProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,9 +161,15 @@ export function MerchCustom({
                 />
               </div>
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-end items-center gap-4 pt-8">
               <button
-                className="mt-10 bg-accent text-white py-2 px-8 rounded-lg transition-colors"
+                className="bg-accent text-white py-2 px-8 rounded-lg transition-colors"
+                onClick={() => selectedImage && setIsOpen(true)}
+              >
+                プレビュー
+              </button>
+              <button
+                className="bg-accent text-white py-2 px-8 rounded-lg transition-colors"
                 onClick={onSubmit}
               >
                 {type === "store" ? "新規登録" : "変更"}
@@ -173,6 +180,19 @@ export function MerchCustom({
       </div>
 
       <TranslationSidebar />
+      {isOpen && selectedImage && (
+        <MerchPreviewModal
+          onClose={() => setIsOpen(false)}
+          merch={{
+            url: selectedImage,
+            allergyNames: allergies
+              .filter((allergy) => merch.allergyIds.includes(allergy.value))
+              .map((allergy) => allergy.label),
+            translations: merch.translations,
+            price: merch.price || 0,
+          }}
+        />
+      )}
     </>
   );
 }

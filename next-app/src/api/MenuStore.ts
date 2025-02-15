@@ -33,41 +33,34 @@ export interface MenuStoreProps {
   };
 }
 
-export interface MenuStoreSuccessResponse {
-  success: true;
-  message: string;
-}
-
-export interface MenuStoreErrorResponse {
-  success: false;
-  errors: string[];
+export interface MenuStoreResponse {
+  success: boolean;
+  messages: string[];
 }
 
 export async function MenuStore({
   menu,
-}: MenuStoreProps): Promise<MenuStoreSuccessResponse | MenuStoreErrorResponse> {
-  const api_url = `${process.env.NEXT_PUBLIC_API_URL}/menu`;
-  const token = Cookies.get("AuthToken");
-  try {
-    const response = await axios.post<
-      MenuStoreSuccessResponse | MenuStoreErrorResponse
-    >(
-      api_url,
+}: MenuStoreProps): Promise<MenuStoreResponse> {
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/menu`;
+  const authToken = Cookies.get("authToken");
+  return await axios
+    .post<MenuStoreResponse>(
+      apiUrl,
       {
         menu: menu,
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authToken}`,
         },
       }
-    );
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    return {
-      success: false,
-      errors: ["登録に失敗しました。"],
-    };
-  }
+    )
+    .then((response) => response.data)
+    .catch((error) => {
+      console.warn(error);
+      return {
+        success: false,
+        messages: error.response?.data.messages || ["エラーが発生しました"],
+      };
+    });
 }
