@@ -8,46 +8,50 @@ export interface MerchStoreProps {
       name: string;
     }>;
     allergyIds: number[];
-    price: number;
-    imgData: File;
+    price: number | null;
+    imgData: File | null;
   };
 }
 
-export interface MerchStoreSuccessResponse {
-  success: true;
-  message: string;
-}
-
-export interface MerchStoreErrorResponse {
-  success: false;
-  errors: string[];
+export interface MerchStoreResponse {
+  success: boolean;
+  messages: string[];
 }
 
 export async function MerchStore({
   merch,
-}: MerchStoreProps): Promise<MerchStoreSuccessResponse | MerchStoreErrorResponse> {
-  const api_url = `${process.env.NEXT_PUBLIC_API_URL}/merch`;
-  const token = Cookies.get("AuthToken");
-  try {
-    const response = await axios.post<
-      MerchStoreSuccessResponse | MerchStoreErrorResponse
-    >(
-      api_url,
+}: MerchStoreProps): Promise<MerchStoreResponse> {
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/merch`;
+  const authToken = Cookies.get("authToken");
+  const formData = new FormData();
+  if (merch.imgData) {
+    formData.append("merch[imgData]", merch.imgData); // imgData はファイルとして追加
+  }
+
+  return await axios
+    .post<MerchStoreResponse>(
+      apiUrl,
       {
-        merch: merch,
+        merch: {
+          ...merch,
+          imgData: formData.get("merch[imgData]"),
+        },
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "multipart/form-data",
         },
       }
-    );
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    return {
-      success: false,
-      errors: ["登録に失敗しました。"],
-    };
-  }
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.warn(error);
+      return {
+        success: false,
+        messages: error.response?.data.messages || ["エラーが発生しました"],
+      };
+    });
 }

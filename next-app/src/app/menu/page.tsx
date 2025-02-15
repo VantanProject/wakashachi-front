@@ -48,7 +48,7 @@ export default function Page() {
   const [deleteModalFlg, setDeleteModalFlg] = useState(false);
 
   return (
-    <>
+    <div className="p-4">
       <List title="メニュー表一覧">
         <div className="flex justify-between pb-5">
           <SearchBox
@@ -88,6 +88,6 @@ export default function Page() {
           setDeleteModalFlg(false);
         }}
       />
-    </>
+    </div>
   );
 }

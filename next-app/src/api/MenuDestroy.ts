@@ -13,12 +13,12 @@ export interface MenuDestroyResponse {
 export async function MenuDestroy({
   ids,
 }: MenuDestroyProps): Promise<MenuDestroyResponse> {
-  const api_url = `${process.env.NEXT_PUBLIC_API_URL}/menu`;
-  const token = Cookies.get("AuthToken");
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/menu`;
+  const authToken = Cookies.get("authToken");
   try {
-    const response = await axios.delete<MenuDestroyResponse>(api_url, {
+    const response = await axios.delete<MenuDestroyResponse>(apiUrl, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${authToken}`,
       },
       params: {
         ids: ids,

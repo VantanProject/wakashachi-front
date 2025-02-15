@@ -13,22 +13,22 @@ export interface MenuIndexResponse {
     menus: Array<{
         id: number;
         name: string;
-        updated_at: string;
+        updatedAt: string;
     }>
     ids: number[];
     lastPage: number;
 }
 
 export async function MenuIndex({ search }: MenuIndexProps): Promise<MenuIndexResponse> {
-    const api_url = `${process.env.NEXT_PUBLIC_API_URL}/menu`;
-    const token = Cookies.get("AuthToken");
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/menu`;
+    const authToken = Cookies.get("authToken");
     try {
-        const response = await axios.get<MenuIndexResponse>(api_url, {
+        const response = await axios.get<MenuIndexResponse>(apiUrl, {
             params: {
                 search: search
             },
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${authToken}`,
             },
         });
         return response.data;

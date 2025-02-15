@@ -3,11 +3,25 @@
 @tailwind utilities;
 
 :root {
-  --base-color: #FBFCFD;
-  --text-color: #4D4535;
-  --accent-color: #E97F12;
-  --accent-dark-color: #BA660E;
-  --accent-light-color: #F8DFCF;
+  --base-color: #fbfcfd;
+  --text-color: #4d4535;
+  --accent-color: #e97f12;
+  --accent-dark-color: #ba660e;
+  --accent-light-color: #f8dfcf;
   --text-opacity-color: rgb(77, 69, 53, 0.6);
-  --form-error-color: #D80606;
+  --form-error-color: #d80606;
+}
+
+body {
+  overscroll-behavior-x: none;
+}
+
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }

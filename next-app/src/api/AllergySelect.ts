@@ -8,21 +8,23 @@ export interface AllergySelectResponse {
 }
 
 export async function AllergySelect(): Promise<AllergySelectResponse> {
-  const api_url = `${process.env.NEXT_PUBLIC_API_URL}/allergy/select`;
-  const token = Cookies.get("AuthToken");
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/allergy/select`;
+  const authToken = Cookies.get("authToken");
 
-  try {
-    const response = await axios.get<AllergySelectResponse>(api_url, {
+  return await axios
+    .get<AllergySelectResponse>(apiUrl, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${authToken}`,
       },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.warn(error);
+      return {
+        success: false,
+        allergies: [],
+      };
     });
-    return response.data;
-  } catch (e) {
-    console.error(e);
-    return {
-      success: false,
-      allergies: [],
-    };
-  }
 }
