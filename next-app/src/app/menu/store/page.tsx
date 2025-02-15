@@ -216,10 +216,7 @@ export default function Page() {
         )}
 
         <div className="flex">
-          <div
-            className="overflow-auto w-full p-2 pt-28"
-            id="mobile-view"
-          >
+          <div className="overflow-auto w-full p-2 pt-28" id="mobile-view">
             <div className="flex gap-28 w-fit pl-10 pr-20 pt-10">
               {Array.from({ length: menu.pages.length }, (_, i) => i + 1).map(
                 (pageIndex) => (
@@ -262,6 +259,7 @@ export default function Page() {
                               {item.type === "merch" ? (
                                 <div className="relative bg-gray-100 overflow-hidden w-full h-full">
                                   <Image
+                                    unoptimized={true}
                                     className="absolute top-0 w-full h-auto"
                                     src={
                                       merches.find(

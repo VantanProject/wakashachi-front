@@ -4,4 +4,4 @@ services:
     volumes:
       - ./next-app:/next-app
     ports:
-      - 3004:3000
+      - 3002:3000
