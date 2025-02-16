@@ -2,6 +2,7 @@
 
 import { MenuShow, MenuShowResponse } from "@/api/MenuShow";
 import { AllergyIcon } from "@/components/AllergyIcon";
+import { LanguageSelect } from "@/components/LanguageSelect";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -141,6 +142,14 @@ export default function Page() {
             )}
         </div>
       )}
+
+      <div className="fixed bottom-10 right-10">
+        <LanguageSelect
+          width="100px"
+          value={languageId}
+          onChange={(item) => setLanguageId(item.value)}
+        />
+      </div>
     </>
   );
 }
