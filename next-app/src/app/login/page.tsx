@@ -30,7 +30,7 @@ export default function Page() {
     <div className="flex items-center justify-center min-h-screen ">
       <div className="max-w-[480px] w-full">
         <Image
-          src="/wakalogo.png"
+          src="/top-logo.png"
           alt="若鯱家のロゴ"
           width={375}
           height={375}
