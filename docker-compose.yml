@@ -1,7 +1,7 @@
 services:
-  next:
+  app:
     build: ./
     volumes:
-      - ./next-app:/next-app
+      - .:/front
     ports:
       - 3002:3000

@@ -1,7 +1,7 @@
 FROM node:22.5-slim
 
-WORKDIR /next-app
-COPY ./next-app .
+WORKDIR /front
+COPY . .
 
 RUN npm install
 CMD ["npm", "run", "dev"]
